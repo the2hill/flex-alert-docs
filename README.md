@@ -44,7 +44,7 @@ Once we have our rules files we can then parse them into a markdown document...
 ### Parse Prometheus Alert Outputs to alerts.md file...
 
 ```bash
-python python parse.py /path/to/alerts/dir -o docs/alerts.md
+python python parse-alerts.py /path/to/alerts/dir -o docs/alerts.md
 ```
 
 The `/path/to/alerts/dir` is a set of yaml rules files produced by Prometheus configurations. 
