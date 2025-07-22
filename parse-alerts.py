@@ -62,7 +62,10 @@ def generate_markdown(alerts_by_group, output_file):
                 summary = alert["summary"].replace('|', '\\|').replace('\n', '<br>') if alert["summary"] else ''
                 description = alert["description"].replace('|', '\\|').replace('\n', '<br>') if alert["description"] else ''
 
-                f.write(f'\n| **{alert_name}** | "{summary}" | "{description}" |')
+                f.write(f'\n| **{alert_name}** | "{summary}" |')
+                f.write('{% # ')
+                f.write(f' "{description}"')
+                f.write(' %} |')
 
             f.write('\n<p align="right"><a href="#top">🔝 Back to Top</a></p>\n')
             f.write('\n---\n\n')
