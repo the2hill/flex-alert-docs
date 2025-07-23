@@ -18,10 +18,12 @@ def extract_alerts_from_file(file_path):
                 alert_name = rule['alert']
                 summary = rule.get('annotations', {}).get('summary', '')
                 description = rule.get('annotations', {}).get('description', '')
+                severity = rule.get('labels', {}).get('severity', '')
                 alerts_by_group.setdefault(group_name, []).append({
                     'alert': alert_name,
                     'summary': summary,
-                    'description': description
+                    'description': description,
+                    'severity': severity
                 })
     return alerts_by_group
 
@@ -62,19 +64,17 @@ def generate_markdown(alerts_by_group, output_file):
         f.write(f'<a name="top"></a>\n')
         f.write(f'<p style="font-size: 28px; font-weight: bold;">Prometheus Alert Documentation</p>\n\n')
 
-        # Automatic TOC using Python-Markdown
-        f.write(f'[TOC]\n\n')
-
         # Alert Tables
         for group_name in sorted(alerts_by_group.keys()):
             f.write(f'## {group_name}\n')
-            f.write('| Alert Name | Summary | Description |\n')
-            f.write('| :--- | :--- | :--- |')
+            f.write('| Alert Name | Summary | Description | Severity |\n')
+            f.write('| :--- | :--- | :--- | :--- |')
             for alert in sorted(alerts_by_group[group_name], key=lambda a: a['alert']):
                 alert_name = alert["alert"].replace('|', '\\|')
                 summary = escape_liquid(alert["summary"].replace('|', '\\|').replace('\n', '<br>')) if alert["summary"] else ''
                 description = escape_liquid(alert["description"].replace('|', '\\|').replace('\n', '<br>')) if alert["description"] else ''
-                f.write(f'\n| **{alert_name}** | {summary} | {description} |')
+                severity = alert["severity"].replace('|', '\\|')
+                f.write(f'\n| **{alert_name}** | {summary} | {description} | {severity} |')
             f.write('\n<p align="right"><a href="#top">🔝 Back to Top</a></p>\n')
             f.write('\n---\n\n')
 
