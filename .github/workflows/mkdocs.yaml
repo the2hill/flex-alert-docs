@@ -48,7 +48,7 @@ jobs:
     needs: build
 
     # ensure we only run on commits to the main branch
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/master'
 
     runs-on: ubuntu-latest
 
