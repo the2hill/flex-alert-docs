@@ -44,36 +44,44 @@ def github_anchor(text):
     return anchor
 
 def generate_markdown(alerts_by_group, output_file):
+    def escape_liquid(text):
+        """
+        Escape {{ and }} unless they are inside inline code blocks (`...`).
+        """
+        def replacer(match):
+            segment = match.group(0)
+            if segment.startswith('`') and segment.endswith('`'):
+                return segment  # Don't escape inside backticks
+            # Escape {{ and }} outside backticks
+            return segment.replace('{{', '&#123;&#123;').replace('}}', '&#125;&#125;')
+
+        # Match either `inline code` or everything else
+        return ''.join(replacer(m) for m in re.finditer(r'`[^`]*`|[^`]+', text))
+
     with open(output_file, 'w', encoding='utf-8') as f:
-        f.write('<a name="top"></a>\n')
-        f.write('<p style="font-size: 28px; font-weight: bold;">Prometheus Alert Documentation</p>\n\n')
+        f.write(f'<a name="top"></a>\n')
+        f.write(f'<p style="font-size: 28px; font-weight: bold;">Prometheus Alert Documentation</p>\n\n')
 
-        # Alert Tables in collapsible sections
+        # Automatic TOC using Python-Markdown
+        f.write(f'[TOC]\n\n')
+
+        # Alert Tables
         for group_name in sorted(alerts_by_group.keys()):
-
-            f.write(f'## {group_name}<br>')
-            f.write(f'\n<summary><strong>{group_name}</strong></summary><br>\n\n')
-
+            f.write(f'## {group_name}\n')
             f.write('| Alert Name | Summary | Description |\n')
-            f.write('| --- | --- | --- |')
-
+            f.write('| :--- | :--- | :--- |')
             for alert in sorted(alerts_by_group[group_name], key=lambda a: a['alert']):
                 alert_name = alert["alert"].replace('|', '\\|')
-                summary = alert["summary"].replace('|', '\\|').replace('\n', '<br>') if alert["summary"] else ''
-                description = alert["description"].replace('|', '\\|').replace('\n', '<br>') if alert["description"] else ''
-
-                f.write(f'\n| **{alert_name}** | "{summary}" |')
-                f.write('{% # ')
-                f.write(f' "{description}"')
-                f.write(' %} |')
-
+                summary = escape_liquid(alert["summary"].replace('|', '\\|').replace('\n', '<br>')) if alert["summary"] else ''
+                description = escape_liquid(alert["description"].replace('|', '\\|').replace('\n', '<br>')) if alert["description"] else ''
+                f.write(f'\n| **{alert_name}** | {summary} | {description} |')
             f.write('\n<p align="right"><a href="#top">🔝 Back to Top</a></p>\n')
             f.write('\n---\n\n')
 
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description='Generate Markdown tables for Prometheus alert groups with collapsible sections and TOC.')
+    parser = argparse.ArgumentParser(description='Generate Markdown tables for Prometheus alert groups with TOC.')
     parser.add_argument('input_path', help='YAML file or directory containing alert rules')
     parser.add_argument('-o', '--output', default='alerts.md', help='Output Markdown file')
     args = parser.parse_args()
@@ -90,12 +98,3 @@ if __name__ == "__main__":
 
     generate_markdown(alerts, args.output)
     print(f"Markdown file generated: {args.output}")
-
-
-    import markdown
-
-    with open(args.output, encoding='utf-8') as f:
-        md_text = f.read()
-
-    html = markdown.markdown(md_text, extensions=['toc', 'tables'])
-
