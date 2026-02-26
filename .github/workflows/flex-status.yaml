@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Fetch OpenStack Flex status
-        run: python3 .github/workflows/fetch-status.py --output docs/flex-status.json
+        run: python3 .github/workflows/flex-status.py --output docs/flex-status.json
 
       - name: Commit if changed
         run: |
