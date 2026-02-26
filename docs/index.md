@@ -7,7 +7,7 @@ hide:
 
 <script>
 (function () {
-  var JSON_URL = 'flex-alert-docs/flex-status.json';
+  var JSON_URL = '/flex-status.json';
 
   var IMPACT_STYLE = {
     critical:             { bg: '#7f0000', border: '#ff1744', label: '🔴 Critical Incident'     },
