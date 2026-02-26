@@ -17,12 +17,12 @@ jobs:
       - name: Fetch OpenStack Flex status
         run: python3 .github/workflows/fetch-status.py --output docs/flex-status.json
 
-#      - name: Commit if changed
-#        run: |
-#          git config user.name  "github-actions[bot]"
-#          git config user.email "github-actions[bot]@users.noreply.github.com"
-#          git add docs/flex-status.json
-#          git diff --cached --quiet && echo "No changes." || (
-#            git commit -m "chore: sync rackspace openstack flex status [skip ci]"
-#            git push
-#          )
+      - name: Commit if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/flex-status.json
+          git diff --cached --quiet && echo "No changes." || (
+            git commit -m "chore: sync rackspace openstack flex status [skip ci]"
+            git push
+          )
