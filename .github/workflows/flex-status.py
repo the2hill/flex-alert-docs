@@ -295,7 +295,7 @@ def main():
         return
 
     # ── Normal run ────────────────────────────────────────────────────────────
-    now            = datetime.now(timezone.utc)
+    now            = datetime(2026, 2, 26, 8, 0, tzinfo=timezone.utc)
     current_status = process_current_status(status_data)
     active_event   = process_outages(history_data, now)
 
