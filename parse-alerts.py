@@ -61,21 +61,28 @@ def generate_markdown(alerts_by_group, output_file):
         return ''.join(replacer(m) for m in re.finditer(r'`[^`]*`|[^`]+', text))
 
     with open(output_file, 'w', encoding='utf-8') as f:
-        f.write(f'<a name="top"></a>\n')
-        f.write(f'<p style="font-size: 28px; font-weight: bold;">Prometheus Alert Documentation</p>\n\n')
+        #f.write(f'<a name="top"></a>\n')
+        #f.write(f'<p style="font-size: 28px; font-weight: bold;">Prometheus Alert Documentation</p>\n\n')
+
+        # SHAREPOINT TOC
+        for group_name in sorted(alerts_by_group.keys()):
+            gntoc = group_name.lower().replace(' ', '-')
+            f.write(f'- [{group_name}](#{gntoc}) \n')
+
+        f.write('\n---\n\n')
 
         # Alert Tables
         for group_name in sorted(alerts_by_group.keys()):
-            f.write(f'## {group_name}\n')
+            f.write(f'## {group_name}\n\n')
             f.write('| Alert Name | Summary | Description | Severity |\n')
             f.write('| :--- | :--- | :--- | :--- |')
             for alert in sorted(alerts_by_group[group_name], key=lambda a: a['alert']):
                 alert_name = alert["alert"].replace('|', '\\|')
-                summary = escape_liquid(alert["summary"].replace('|', '\\|').replace('\n', '<br>')) if alert["summary"] else ''
-                description = escape_liquid(alert["description"].replace('|', '\\|').replace('\n', '<br>')) if alert["description"] else ''
+                summary = escape_liquid(alert["summary"].replace('|', '\\|').replace('\n', ' ').replace('\|', ' or ').replace('{{', '{').replace('}}', '}')) if alert["summary"] else ''
+                description = escape_liquid(alert["description"].replace('|', '\\|').replace('\n', ' ').replace('\|', ' or ').replace('\|', ' or ').replace('{{', '{').replace('}}', '}')) if alert["description"] else ''
                 severity = alert["severity"].replace('|', '\\|')
                 f.write(f'\n| **{alert_name}** | {summary} | {description} | {severity} |')
-            f.write('\n<p align="right"><a href="#top">🔝 Back to Top</a></p>\n')
+            #f.write('\n<p align="right"><a href="#top">🔝 Back to Top</a></p>\n')
             f.write('\n---\n\n')
 
 if __name__ == "__main__":

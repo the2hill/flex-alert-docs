@@ -1,0 +1,26 @@
+#!/bin/bash
+# Description: Fetches the version for SERVICE_NAME from the specified
+# YAML file and executes a helm upgrade/install command with dynamic values files.
+
+# Disable SC2124 (unused array), SC2145 (array expansion issue), SC2294 (eval)
+# shellcheck disable=SC2124,SC2145,SC2294
+
+# Collect all --set arguments, executing commands and quoting safely
+set_args=(
+    --set "network.ssh.public_key=$(kubectl -n openstack get secret nova-ssh-keypair -o jsonpath='{.data.public_key}' | base64 -d)"
+    --set "network.ssh.private_key=$(kubectl -n openstack get secret nova-ssh-keypair -o jsonpath='{.data.private_key}' | base64 -d)"
+)
+
+
+helm_command=(
+    "${set_args[@]}"
+
+    "$@"
+)
+
+echo "Executing Helm command (arguments are quoted safely):"
+printf '%q ' "${helm_command[@]}"
+echo
+
+# Execute the command directly from the array
+"${helm_command[@]}"

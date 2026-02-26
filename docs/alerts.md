@@ -1,6 +1,8 @@
 <a name="top"></a>
 <p style="font-size: 28px; font-weight: bold;">Prometheus Alert Documentation</p>
 
+[TOC]
+
 ## Blackbox Alerts
 | Alert Name | Summary | Description | Severity |
 | :--- | :--- | :--- | :--- |
