@@ -1,5 +1,20 @@
 {
-  "fetched_at": "1970-01-01T00:00:00+00:00",
-  "active_incident": null,
-  "active_maintenance": null
+  "fetched_at": "2026-02-26T08:00:00+00:00",
+  "current_status": {
+    "status": "maintenance",
+    "color_raw": "#5bc0de",
+    "message": "Planned maintenance on",
+    "date": "2026-02-26"
+  },
+  "active_event": {
+    "title": "OpenStack Flex | DFW3, SJC3 | February 26, 2026",
+    "details": "Rackspace will be performing a Service Disrupting maintenance in our DFW3, SJC3 data centers between February 25, 2026 20:00 and February 26, 2026 08:00 CT (between February 26, 2026 02:00 and February 26, 2026 14:00 UTC). During this maintenance, customers may notice up to one minute of network connectivity loss. As always, your Support Team will be available by phone to assist you.",
+    "begin_display": "2026-02-25 20:00:00",
+    "end_display": "2026-02-26 08:00:00",
+    "begin_value": "2026-02-26 02:00:00",
+    "end_value": "2026-02-26 14:00:00",
+    "duration": "",
+    "date": "February 2026",
+    "link": "https://rackspace.service-now.com/system_status?id=service_status&service=85be01de87aaee104b7afc45dabb35b8"
+  }
 }
