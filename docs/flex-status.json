@@ -1,9 +1,9 @@
 {
   "fetched_at": "2026-02-26T08:00:00+00:00",
   "current_status": {
-    "status": "operational",
-    "color_raw": "#5cb85c",
-    "message": "No issues on",
+    "status": "outage",
+    "color_raw": "#BB0000",
+    "message": "Outage on",
     "date": "2026-02-27"
   },
   "active_event": {
