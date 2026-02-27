@@ -1,10 +1,10 @@
 {
   "fetched_at": "2026-02-26T08:00:00+00:00",
   "current_status": {
-    "status": "maintenance",
-    "color_raw": "#5bc0de",
-    "message": "Planned maintenance on",
-    "date": "2026-02-26"
+    "status": "operational",
+    "color_raw": "#5cb85c",
+    "message": "No issues on",
+    "date": "2026-02-27"
   },
   "active_event": {
     "title": "OpenStack Flex | DFW3, SJC3 | February 26, 2026",
